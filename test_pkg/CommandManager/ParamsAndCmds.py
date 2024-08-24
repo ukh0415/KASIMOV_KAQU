@@ -5,6 +5,11 @@
 
 import numpy as np
 from enum import Enum
+# 통신 및 센서 관련
+USE_IMU = False
+USE_OHTER_SENSORS = False
+
+RATE = 60
 
 # param - 지오메트리 관련
 class BodyParam():
@@ -30,8 +35,24 @@ class _LegParam:
     class gait_param:
         def __init__(self):
             self.cycle_time = None
-            self.
+            self.stance_time = 0.18
+            self.swing_time = 0.24
+            self.time_step = 0.02
+            self.use_imu = USE_IMU
+
     class leg_pose:
+        def __init__(self):
+            self.default_stance = default_stance
+            self
+@property
+def default_stance(self):
+    # FR, FL, RR, RL
+    return np.array([],[],[])
+
+class Teleop():
+    USE_JOY = True
+    USE_KEYBOARD = False
+
 
 
 init_pose

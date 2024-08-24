@@ -12,10 +12,14 @@ from InverseKinematics import robot_IK
 from CommandManager import ParamsAndCmds
 from std_msgs.msg import Float64
 
-# 통신 관련 설정
+# 센서 및 통신 관련 설정
 
+
+# 클래스 선언
 robot = RobotController()
 
+# 변수 가져오기
+default_stance = ParamsAndCmds.default_stance
 
 
 
