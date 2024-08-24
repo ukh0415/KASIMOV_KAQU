@@ -12,14 +12,9 @@ from InverseKinematics import robot_IK
 from CommandManager import ParamsAndCmds
 from std_msgs.msg import Float64
 
-class RobotController(Node):
-    def __init__(self):
-        super.__init__('ctrl_gz_node')
+# 통신 관련 설정
 
-        # 여러 설정
-
-        # 퍼블리셔
-
+robot = RobotController()
 
 
 
@@ -32,6 +27,11 @@ def main(args=None):
     print("Starting Robot")
 
     # 노드 켜는 부분
+
+    # init 포즈 설정
+
+    try:
+        #각 노드.run
 
     
     rclpy.shutdown()

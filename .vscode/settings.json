@@ -1,3 +1,17 @@
 {
-    "ros.distro": "humble"
+    "ros.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/apka/ros2_ws/install/tutorial/lib/python3.10/site-packages",
+        "/home/apka/ros2_ws/install/test_pkg/lib/python3.10/site-packages",
+        "/home/apka/ros2_ws/install/py_pubsub/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/apka/ros2_ws/install/tutorial/lib/python3.10/site-packages",
+        "/home/apka/ros2_ws/install/test_pkg/lib/python3.10/site-packages",
+        "/home/apka/ros2_ws/install/py_pubsub/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }
