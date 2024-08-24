@@ -18,6 +18,8 @@ class BodyParam():
         self.height = None
         self.centerOfMass = np.zeros([3])
         self.physical = self._physical_params()
+        
+        self.default_height = 0
         self.roll = 0
         self.pitch = 0
         self.yaw = 0
