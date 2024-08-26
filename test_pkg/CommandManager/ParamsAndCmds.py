@@ -30,10 +30,15 @@ class BodyParam():
         _min_height = 1
         _max_height = 1
 
-class _LegParam:
+class LegParam():
     def __init__(self):
         self.pose = self.leg_pose()
         self.gait = self.gait_param()
+        self.physical = self._physical_params()
+    class _physical_params():
+        l1 = 100
+        l2 = 100
+        l3 = 100
     class gait_param:
         def __init__(self):
             self.cycle_time = None
@@ -46,21 +51,25 @@ class _LegParam:
         def __init__(self):
             self.default_stance = default_stance
             self
+# class LegParam():
+#     def __init__(self):
+#         self.FR = _LegParam()
+#         self.FL = _LegParam()
+#         self.RR = _LegParam()
+#         self.RL = _LegParam()
 @property
 def default_stance(self):
+    # FR, FL, RR, RL
+    return np.array([],[],[])
+
+@property
+def init_pose(self):
     # FR, FL, RR, RL
     return np.array([],[],[])
 
 class Teleop():
     USE_JOY = True
     USE_KEYBOARD = False
-
-
-
-init_pose
-
-default_pose
-    default_height
 
 
 # 행동 관련 변수들

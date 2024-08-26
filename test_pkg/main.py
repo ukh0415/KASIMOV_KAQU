@@ -15,13 +15,19 @@ from std_msgs.msg import Float64
 # 센서 및 통신 관련 설정
 
 
-# 클래스 선언
-robot = RobotController()
+
 
 # 변수 가져오기
-default_stance = ParamsAndCmds.default_stance
+body = ParamsAndCmds.BodyParam()
+legs = ParamsAndCmds.LegParam()
+default_stance = ParamsAndCmds.default_stance()
+init_pose = ParamsAndCmds.init_pose()
 
 
+
+
+# 클래스 선언
+KAQU_robot = RobotController(body, legs, ParamsAndCmds.USE_IMU)
 
 def start(self):
     rclpy.shutdown()
@@ -31,6 +37,9 @@ def main(args=None):
     print("Starting Robot")
 
     # 노드 켜는 부분
+    # 로봇 컨트롤러
+    # 가제보 노드
+    # 조이스틱 노드
 
     # init 포즈 설정
 
