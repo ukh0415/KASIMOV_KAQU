@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 from CommandManager import ParamsAndCmds
 from CommandManager.ParamsAndCmds import BodyParam, LegParam, Command, DynamicState, BehaviorState
+from RobotUtilities.Transformations import euler_from_quaternion
 
 
 
@@ -18,9 +19,8 @@ from TrotGaitController import TrotGaitController
 
 # gait 별 컨트롤러 총괄
 
-class RobotController(Node):
+class RobotController(object):
     def __init__(self, body, legs, imu):
-        super.__init__("robot_controller_node")
         self.body = body
         self.legs = legs
 
@@ -94,7 +94,7 @@ class RobotController(Node):
             self.command.crawl_event = True
             self.command.stand_event = False
             self.command.rest_event = False
-            
+
         elif msg.buttons[3]: #stand
             self.command.trot_event = False
             self.command.crawl_event = False
@@ -103,8 +103,14 @@ class RobotController(Node):
 
         self.currentController.updateStateCommand(msg, self.state, self.command)
 
-        
-
-        # 리턴할 내용 : 발의 xyz 위치
-
-        # start 해서 스핀하는 내용 들어가야 함. 
+    def imu_orientation(self, msg):
+        q = msg.orientation
+        rpy_angles = euler_from_quaternion(q.x, q.y, q.z, q.w)
+        self.state.imu_roll = rpy_angles[0]
+        self.state.imu_pitch = rpy_angles[1]
+    
+    def run(self):
+        return self.currentController.run(self.state, self.command)
+    @property
+    def default_stance(self):
+        return self.default_stance
