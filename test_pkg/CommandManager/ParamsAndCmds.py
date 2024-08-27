@@ -6,10 +6,11 @@
 import numpy as np
 from enum import Enum
 # 통신 및 센서 관련
-USE_IMU = False
-USE_OHTER_SENSORS = False
-
-RATE = 60
+class Interface():
+    USE_IMU = False
+    USE_OHTER_SENSORS = False
+    
+    RATE = 60
 
 # param - 지오메트리 관련
 class BodyParam():

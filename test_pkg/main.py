@@ -22,12 +22,13 @@ body = ParamsAndCmds.BodyParam()
 legs = ParamsAndCmds.LegParam()
 default_stance = ParamsAndCmds.default_stance()
 init_pose = ParamsAndCmds.init_pose()
-
+USE_IMU = ParamsAndCmds.Interface.USE_IMU
+RATE = ParamsAndCmds.Interface.RATE
 
 
 
 # 클래스 선언
-KAQU_robot = RobotController(body, legs, ParamsAndCmds.USE_IMU)
+KAQU_robot = RobotController.Robot(body, legs, ParamsAndCmds.USE_IMU)
 
 def start(self):
     rclpy.shutdown()
@@ -46,6 +47,7 @@ def main(args=None):
     try:
         #각 노드.run
 
+커멘드메니져, 조이 노드, 하드웨어 인터페이스 실행
     
     rclpy.shutdown()
 

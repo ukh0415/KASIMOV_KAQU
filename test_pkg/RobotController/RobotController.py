@@ -19,7 +19,7 @@ from TrotGaitController import TrotGaitController
 
 # gait 별 컨트롤러 총괄
 
-class RobotController(object):
+class Robot(object):
     def __init__(self, body, legs, imu):
         self.body = body
         self.legs = legs
@@ -76,6 +76,7 @@ class RobotController(object):
             self.currentController.pid_controller.reset()
             self.command.rest_event = False
     
+    # 조이스틱 메시지 콜백
     def joystick_command(self,msg):
         if msg.buttons[0]: #rest
             self.command.trot_event = False
@@ -103,6 +104,7 @@ class RobotController(object):
 
         self.currentController.updateStateCommand(msg, self.state, self.command)
 
+    #imu 메시지 콜백
     def imu_orientation(self, msg):
         q = msg.orientation
         rpy_angles = euler_from_quaternion(q.x, q.y, q.z, q.w)
