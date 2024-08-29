@@ -40,6 +40,7 @@ class LegParam():
         l1 = 100
         l2 = 100
         l3 = 100
+        l4 = 100
     class gait_param:
         def __init__(self):
             self.cycle_time = None

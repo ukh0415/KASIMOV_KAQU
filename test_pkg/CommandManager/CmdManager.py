@@ -17,6 +17,7 @@ RATE = interface.RATE
 body = ParamsAndCmds.BodyParam
 legs = ParamsAndCmds.LegParam
 KAQU_robot = RobotController.Robot(body, legs, USE_IMU)
+KAQU_ik = robot_IK.InverseKinematics(body, legs)
 
 joint_topics = ["/KAQU_ctrl/FR1_joint/command",
                 "/KAQU_ctrl/FR2_joint/command",
@@ -56,7 +57,7 @@ class CmdManager_ROS2():
         self.pub1_topic = joint_topics
         self.pub1_msgType = 하준이가 보내주는거
         self.pub1_timer_period = 0.01
-        self.pub1_timers = []
+        self.pub1_timer = None
         self.pub1_queue = 10
         self.joint_publishers1 = []
         self.pub1_cb = self._joint_pub_cb
@@ -82,10 +83,27 @@ class CmdManager_ROS2():
                                             self.pub1_msgType,
                                             self.pub1_topic,
                                             self.pub1_queue)
+            self.pub1_timer = self.node.create_timer(self.pub1_timer_period, self.pub1_cb)
             
 
 
     def _joint_pub_cb(self):
+        leg_positions = KAQU_robot.run()
+        KAQU_robot.change_controller()
+
+        dx = KAQU_robot.state.body_local_position[0]
+        dy = KAQU_robot.state.body_local_position[1]
+        dz = KAQU_robot.state.body_local_position[2]
+
+        roll = KAQU_robot.state.body_local_orientation[0]
+        pitch = KAQU_robot.state.body_local_orientation[1]
+        yaw = KAQU_robot.state.body_local_orientation[2]
+
+        try:
+            joint_angles = robot_IK.InverseKinematics
+
+
+
 
 
 
