@@ -10,6 +10,7 @@ from sensor_msgs.msg import Joy, Imu
 from RobotController import RobotController
 from InverseKinematics import robot_IK
 from CommandManager import ParamsAndCmds
+from CommandManager.CmdManager import CmdManager_ROS2
 from std_msgs.msg import Float64
 
 # 센서 및 통신 관련 설정
@@ -24,12 +25,14 @@ default_stance = ParamsAndCmds.default_stance()
 init_pose = ParamsAndCmds.init_pose()
 USE_IMU = ParamsAndCmds.Interface.USE_IMU
 RATE = ParamsAndCmds.Interface.RATE
+cmd = ParamsAndCmds.Command()
 
 body_area ={body.physical._length, body.physical._width}
 leg_length = {legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
 
 # 클래스 선언
 KAQU_robot = RobotController.Robot(body_area, leg_length, ParamsAndCmds.USE_IMU)
+KAQU_cmd_manager = CmdManager_ROS2(set_msgs=cmd, send_msgs=[legs, body_area])
 
 def start(self):
     rclpy.shutdown()
@@ -46,10 +49,13 @@ def main(args=None):
     # init 포즈 설정
 
     try:
-        #각 노드.run
+        KAQU_cmd_manager.start()
 
-커멘드메니져, 조이 노드, 하드웨어 인터페이스 실행
-    
+        #각 노드.run
+    except:
+        pass
+
+# 커멘드메니져, 조이 노드, 하드웨어 인터페이스 실행
     rclpy.shutdown()
 
 

@@ -111,6 +111,7 @@ class CmdManager_ROS2():
                 self.joint_publishers1[i].publish(joint_angles[i])
         except:
             pass
+
     def start(self):
         self._createNode()
         self.create_sub1()
