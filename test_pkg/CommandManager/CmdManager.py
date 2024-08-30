@@ -16,8 +16,12 @@ USE_IMU = not interface.USE_IMU
 RATE = interface.RATE
 body = ParamsAndCmds.BodyParam
 legs = ParamsAndCmds.LegParam
-KAQU_robot = RobotController.Robot(body, legs, USE_IMU)
-KAQU_ik = robot_IK.InverseKinematics(body, legs)
+
+body_area ={body.physical._length, body.physical._width}
+leg_length = {legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
+
+KAQU_robot = RobotController.Robot(body_area, leg_length, USE_IMU)
+KAQU_ik = robot_IK.InverseKinematics(body_area, leg_length)
 
 joint_topics = ["/KAQU_ctrl/FR1_joint/command",
                 "/KAQU_ctrl/FR2_joint/command",
@@ -61,6 +65,7 @@ class CmdManager_ROS2():
         self.pub1_queue = 10
         self.joint_publishers1 = []
         self.pub1_cb = self._joint_pub_cb
+
     def _createNode(self):
         rclpy.init(args=None)
         self.node = rclpy.create_node(self.node_name)
@@ -100,7 +105,24 @@ class CmdManager_ROS2():
         yaw = KAQU_robot.state.body_local_orientation[2]
 
         try:
-            joint_angles = robot_IK.InverseKinematics
+            joint_angles = KAQU_ik.inverse_kinematics(leg_positions, dx, dy, dz, roll, pitch, yaw)
+
+            for i in range(len(joint_angles)):
+                self.joint_publishers1[i].publish(joint_angles[i])
+        except:
+            pass
+    def start(self):
+        self._createNode()
+        self.create_sub1()
+        self.create_sub2()
+        self.create_pub1()
+        rclpy.spin(self.node)
+        self.node.destroy_node()
+        rclpy.shutdown()
+        self.stop = False
+        
+    def stop(self):
+        self.stop = True
 
 
 

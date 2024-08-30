@@ -25,10 +25,11 @@ init_pose = ParamsAndCmds.init_pose()
 USE_IMU = ParamsAndCmds.Interface.USE_IMU
 RATE = ParamsAndCmds.Interface.RATE
 
-
+body_area ={body.physical._length, body.physical._width}
+leg_length = {legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
 
 # 클래스 선언
-KAQU_robot = RobotController.Robot(body, legs, ParamsAndCmds.USE_IMU)
+KAQU_robot = RobotController.Robot(body_area, leg_length, ParamsAndCmds.USE_IMU)
 
 def start(self):
     rclpy.shutdown()
