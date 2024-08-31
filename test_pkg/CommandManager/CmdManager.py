@@ -7,6 +7,8 @@ from std_msgs.msg import Float64
 from RobotController import RobotController
 from InverseKinematics import robot_IK
 import ParamsAndCmds
+from trajectory_msgs.msg import JointTrajectory
+from trajectory_msgs.msg import JointTrajectoryPoint
 
 # 서브스크라이버 콜백은 편의상 RobotController에 정의되어 있고, 
 # 퍼블리셔는 여기에 정의되어 있음. 
@@ -59,7 +61,7 @@ class CmdManager_ROS2():
         # --- pub
         self.pub1 = None
         self.pub1_topic = joint_topics
-        self.pub1_msgType = 하준이가 보내주는거
+        self.pub1_msgType = JointTrajectory
         self.pub1_timer_period = 0.01
         self.pub1_timer = None
         self.pub1_queue = 10
@@ -95,6 +97,8 @@ class CmdManager_ROS2():
     def _joint_pub_cb(self):
         leg_positions = KAQU_robot.run()
         KAQU_robot.change_controller()
+        msg = JointTrajectory()
+        msg.joint_names = {"FR_mainbodyhip_joint", }###################################
 
         dx = KAQU_robot.state.body_local_position[0]
         dy = KAQU_robot.state.body_local_position[1]
