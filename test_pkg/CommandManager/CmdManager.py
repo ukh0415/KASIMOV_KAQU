@@ -46,7 +46,7 @@ class CmdManager_ROS2():
         self.node_name = node_name
         # ---joy sub
         self.sub1 = None
-        self.sub1_topic = "KAQU_joy/joy_ramped"
+        self.sub1_topic = "cmd_vel"
         self.sub1_msgType = Joy
         self.sub1_cb = KAQU_robot.joystick_command
         self.sub1_queueSize = 30

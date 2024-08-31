@@ -34,20 +34,25 @@ class BodyParam():
 class LegParam():
     def __init__(self):
         self.pose = self.leg_pose()
-        self.gait = self.gait_param()
+        self.gait = self._trot_gait_param()
         self.physical = self._physical_params()
     class _physical_params():
         l1 = 100
         l2 = 100
         l3 = 100
         l4 = 100
-    class gait_param:
+    class _trot_gait_param:
         def __init__(self):
             self.cycle_time = None
             self.stance_time = 0.18
             self.swing_time = 0.24
             self.time_step = 0.02
-            self.use_imu = USE_IMU
+
+            self.max_x_vel = 0.024
+            self.max_y_vel = 0.01
+            self.max_yaw_rate = 0.6 
+
+            self.z_leg_lift = 0.07
 
     class leg_pose:
         def __init__(self):
@@ -101,7 +106,6 @@ class DynamicState(object):
 
         self.ticks = 0
         self.behavior_state = BehaviorState.REST
-
 
 # 커멘드
 class Command(object):

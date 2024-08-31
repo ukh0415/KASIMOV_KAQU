@@ -20,9 +20,12 @@ from TrotGaitController import TrotGaitController
 # gait 별 컨트롤러 총괄
 
 class Robot(object):
-    def __init__(self, body, legs, imu):
-        self.body = body
-        self.legs = legs
+    def __init__(self, body_area, leg_length, imu):
+        self.body_area = body_area
+        self.leg_length = leg_length
+
+        legs = LegParam()
+        body = BodyParam()        
 
         self.delta_x = body._physical_params._length*0.5
         self.delta_y = body._physical_params._width*0.5 + legs._physical_params.l1
@@ -35,9 +38,9 @@ class Robot(object):
         
         # 각 컨트롤러 오브젝트 정의
         self.trotGaitController = TrotGaitController(self.default_stance,
-            stance_time = legs.gait_param.stance_time,
-            swing_time = legs.gait_param.swing_time,
-            time_step = legs.gait_param.time_step) # 요부분 legs가 아니라 LegParam으로 바꿔야 할 수도 있음. 
+            stance_time = legs.gait.stance_time,
+            swing_time = legs.gait.swing_time,
+            time_step = legs.gait.time_step) # 요부분 legs가 아니라 LegParam으로 바꿔야 할 수도 있음. 
         self.restController = RestController(self.default_stance)
         self.standController = StandController(self.default_stance)
         
