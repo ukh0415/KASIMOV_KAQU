@@ -7,9 +7,19 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import Joy, Imu
-from RobotController import RobotController
+import sys
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/RobotController')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/InverseKinematics')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/CommandManager')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/JoyNode')
+from test_pkg.RobotController import RobotController
 from InverseKinematics import robot_IK
 from CommandManager import ParamsAndCmds
+
+# from RobotController import RobotController
+# from RobotController.RobotController import Robot
+from InverseKinematics import robot_IK
+
 from CommandManager.CmdManager import CmdManager_ROS2
 from std_msgs.msg import Float64
 
@@ -21,17 +31,18 @@ from std_msgs.msg import Float64
 # 변수 가져오기
 body = ParamsAndCmds.BodyParam()
 legs = ParamsAndCmds.LegParam()
-default_stance = ParamsAndCmds.default_stance()
-init_pose = ParamsAndCmds.init_pose()
+default_stance = ParamsAndCmds.LegParam.leg_pose.def_stance
+init_pose = ParamsAndCmds.LegParam.leg_pose.initial_pose
+default_height = ParamsAndCmds.BodyParam.default_height
 USE_IMU = ParamsAndCmds.Interface.USE_IMU
 RATE = ParamsAndCmds.Interface.RATE
-cmd = ParamsAndCmds.Command()
+cmd = ParamsAndCmds.Command(default_height=default_height)
 
 body_area ={body.physical._length, body.physical._width}
 leg_length = {legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
 
 # 클래스 선언
-KAQU_robot = RobotController.Robot(body_area, leg_length, ParamsAndCmds.USE_IMU)
+KAQU_robot =RobotController.Robot(body_area, leg_length, USE_IMU)
 KAQU_cmd_manager = CmdManager_ROS2(set_msgs=cmd, send_msgs=[legs, body_area])
 
 def start(self):
@@ -52,14 +63,9 @@ def main(args=None):
         KAQU_cmd_manager.start()
 
         #각 노드.run
-    except:
-        pass
-
-# 커멘드메니져, 조이 노드, 하드웨어 인터페이스 실행
-    rclpy.shutdown()
-
-
-
+    except KeyboardInterrupt:
+        KAQU_cmd_manager.node.destroy_node()
+        rclpy.shutdown()
 
 if __name__ =='__main__':
     main()

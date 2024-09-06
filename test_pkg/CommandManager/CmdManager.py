@@ -4,7 +4,7 @@ import numpy as np
 
 from sensor_msgs.msg import Joy, Imu
 from std_msgs.msg import Float64
-from RobotController import RobotController
+from test_pkg.RobotController import RobotController
 from InverseKinematics import robot_IK
 import ParamsAndCmds
 from trajectory_msgs.msg import JointTrajectory
@@ -18,25 +18,38 @@ USE_IMU = not interface.USE_IMU
 RATE = interface.RATE
 body = ParamsAndCmds.BodyParam
 legs = ParamsAndCmds.LegParam
-
-body_area ={body.physical._length, body.physical._width}
-leg_length = {legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
+body_area =[body._physical_params._length, body._physical_params._width]
+    # body.physical._length, body.physical._width}
+leg_length = [legs._physical_params.l1, legs._physical_params.l2, legs._physical_params.l3, legs._physical_params.l4]
+    # legs.physical.l1, legs.physical.l2, legs.physical.l3, legs.physical.l4}
 
 KAQU_robot = RobotController.Robot(body_area, leg_length, USE_IMU)
 KAQU_ik = robot_IK.InverseKinematics(body_area, leg_length)
 
-joint_topics = ["/KAQU_ctrl/FR1_joint/command",
-                "/KAQU_ctrl/FR2_joint/command",
-                "/KAQU_ctrl/FR3_joint/command",
-                "/KAQU_ctrl/FL1_joint/command",
-                "/KAQU_ctrl/FL2_joint/command",
-                "/KAQU_ctrl/FL3_joint/command",
-                "/KAQU_ctrl/RR1_joint/command",
-                "/KAQU_ctrl/RR2_joint/command",
-                "/KAQU_ctrl/RR3_joint/command",
-                "/KAQU_ctrl/RL1_joint/command",
-                "/KAQU_ctrl/RL2_joint/command",
-                "/KAQU_ctrl/RL3_joint/command"]
+# joint_topics = ["/KAQU_ctrl/FR1_joint/command",
+#                 "/KAQU_ctrl/FR2_joint/command",
+#                 "/KAQU_ctrl/FR3_joint/command",
+#                 "/KAQU_ctrl/FL1_joint/command",
+#                 "/KAQU_ctrl/FL2_joint/command",
+#                 "/KAQU_ctrl/FL3_joint/command",
+#                 "/KAQU_ctrl/RR1_joint/command",
+#                 "/KAQU_ctrl/RR2_joint/command",
+#                 "/KAQU_ctrl/RR3_joint/command",
+#                 "/KAQU_ctrl/RL1_joint/command",
+#                 "/KAQU_ctrl/RL2_joint/command",
+#                 "/KAQU_ctrl/RL3_joint/command"]
+joint_topics = ["FR1_joint",
+                "FR2_joint",
+                "FR3_joint",
+                "FL1_joint",
+                "FL2_joint",
+                "FL3_joint",
+                "RR1_joint",
+                "RR2_joint",
+                "RR3_joint",
+                "RL1_joint",
+                "RL2_joint",
+                "RL3_joint"]
 
 class CmdManager_ROS2():
     def __init__(self, set_msgs, send_msgs, node_name = 'cmd_manager_node'):
@@ -97,8 +110,8 @@ class CmdManager_ROS2():
     def _joint_pub_cb(self):
         leg_positions = KAQU_robot.run()
         KAQU_robot.change_controller()
-        msg = JointTrajectory()
-        msg.joint_names = {"FR_mainbodyhip_joint", }###################################
+        
+        
 
         dx = KAQU_robot.state.body_local_position[0]
         dy = KAQU_robot.state.body_local_position[1]

@@ -15,6 +15,8 @@ class Interface():
 # param - 지오메트리 관련
 class BodyParam():
     # 대부분의 내용은 urdf에 있지만, 일단 한번에 모아보기 좋게 나눠봄. 
+
+    default_height = 0
     def __init__(self):
         self.height = None
         self.centerOfMass = np.zeros([3])
@@ -33,6 +35,7 @@ class BodyParam():
 
 class LegParam():
     def __init__(self):
+        # self.def_stance = default_stance
         self.pose = self.leg_pose()
         self.gait = self._trot_gait_param()
         self.physical = self._physical_params()
@@ -53,11 +56,20 @@ class LegParam():
             self.max_yaw_rate = 0.6 
 
             self.z_leg_lift = 0.07
+    class leg_pose():
+        def_stance = np.array([[0, 0, 0, 0],
+                              [0, 0, 0, 0],
+                              [0, 0, 0, 0]])
+        initial_pose = np.array([[0, 0, 0, 0],
+                              [0, 0, 0, 0],
+                              [0, 0, 0, 0]])
+        
 
-    class leg_pose:
-        def __init__(self):
-            self.default_stance = default_stance
-            self
+    # class leg_pose():
+    #     def_stance = 
+        # def __init__(self):
+        #     def_stance = default_stance
+            # self.def_stance = default_stance
 # class LegParam():
 #     def __init__(self):
 #         self.FR = _LegParam()

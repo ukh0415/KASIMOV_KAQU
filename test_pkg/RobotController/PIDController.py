@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import rclpy
+from rclpy.clock import Clock, ClockType
 import numpy as np
 
 import rclpy.time
 
 class PID_controller(object):
-    def __init__(self, kp. ki, kd):
+    def __init__(self, kp, ki, kd):
         self.kp = kp
         self.ki = ki
         self.kd = kd
@@ -18,8 +19,11 @@ class PID_controller(object):
         self.max_I = 0.2
         self.last_error = np.array([0.0,0.0])
 
+        self.clock = Clock(clock_type=ClockType.ROS_TIME)
+        
+
     def reset(self):
-        self.last_time = 여기에 타임 나우 해줘야 함. 
+        self.last_time = self.clock.now()
         self.I_term = np.array([0.0,0.0])
         self.D_term = np.array([0.0,0.0])
         self.last_error = np.array([0.0,0.0])
@@ -27,8 +31,10 @@ class PID_controller(object):
     def run(self, roll, pitch):
         error = self.desired_roll_pitch - np.array([roll, pitch])
 
-        t_now = rclpy. 여기에도 타임나우
-        step = (t_now - self.last_time). to sec 과 같이 초로 변환해줘야 함. 
+        t_now = self.clock.now()
+        step, step_millis = (t_now - self.last_time).seconds_nanoseconds()
+
+        step = step+step_millis
 
         self.I_term = self.I_term + error*step
         

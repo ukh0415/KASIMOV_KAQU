@@ -2,9 +2,18 @@
 # 
 import rclpy
 from rclpy.node import Node
+import numpy as np
+
+import sys
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/RobotController')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/InverseKinematics')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/CommandManager')
+sys.path.append('/home/apka/ros2_ws/src/test_pkg/test_pkg/JoyNode')
 from CommandManager import ParamsAndCmds
-from CommandManager.ParamsAndCmds import BodyParam, LegParam, Command, DynamicState, BehaviorState
+from CommandManager.ParamsAndCmds import BodyParam, LegParam, Command, DynamicState, BehaviorState, Interface
 from RobotUtilities.Transformations import euler_from_quaternion
+
 
 
 
@@ -25,7 +34,8 @@ class Robot(object):
         self.leg_length = leg_length
 
         legs = LegParam()
-        body = BodyParam()        
+        body = BodyParam()
+        interface =  Interface()
 
         self.delta_x = body._physical_params._length*0.5
         self.delta_y = body._physical_params._width*0.5 + legs._physical_params.l1
@@ -34,13 +44,14 @@ class Robot(object):
         self.default_height = 0.15
         
         # 컨트롤러 호출을 위한 기본 발 위치 설정. 요런식으로 불러와도 되는지를 모르겠네
-        self.default_stance = ParamsAndCmds.default_stance()
+        self.default_stance = np.array([[0,0,0,0], [0,0,0,0],[0,0,0,0]])
+        self.default_stance = legs.pose.def_stance
         
         # 각 컨트롤러 오브젝트 정의
         self.trotGaitController = TrotGaitController(self.default_stance,
             stance_time = legs.gait.stance_time,
             swing_time = legs.gait.swing_time,
-            time_step = legs.gait.time_step) # 요부분 legs가 아니라 LegParam으로 바꿔야 할 수도 있음. 
+            time_step = legs.gait.time_step, use_imu=interface.USE_IMU) # 요부분 legs가 아니라 LegParam으로 바꿔야 할 수도 있음. 
         self.restController = RestController(self.default_stance)
         self.standController = StandController(self.default_stance)
         
@@ -116,6 +127,6 @@ class Robot(object):
     
     def run(self):
         return self.currentController.run(self.state, self.command)
-    @property
-    def default_stance(self):
-        return self.default_stance
+    # @property
+    # def default_stance(self):
+    #     return self.default_stance
