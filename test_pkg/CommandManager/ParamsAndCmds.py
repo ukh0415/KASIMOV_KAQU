@@ -23,9 +23,9 @@ class BodyParam():
         self.physical = self._physical_params()
         
         self.default_height = 0
-        self.roll = 0
-        self.pitch = 0
-        self.yaw = 0
+        self.roll = 0   # X
+        self.pitch = 0  # Y
+        self.yaw = 0    # Z
         self.ZMP_handler = np.zeros([4,3])
     class _physical_params():
         _length = 1
